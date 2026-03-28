@@ -19,12 +19,14 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          pip install PyQt6 PyQt6-WebEngine pyinstaller
+          python -m pip install --upgrade pip
+          # Added 'pillow' here to fix the icon format error
+          pip install PyQt6 PyQt6-WebEngine pyinstaller pillow
 
       - name: Build EXE
         shell: pwsh
         run: |
-          # We check if the file exists first. If it doesn't, we build without the --icon flag.
+          # The 'pillow' library will now handle the conversion of logo.ico automatically
           if (Test-Path "logo.ico") {
             pyinstaller --noconsole --onefile --icon="logo.ico" --add-data "logo.ico;." player.py
           } else {
