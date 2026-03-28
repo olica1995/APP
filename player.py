@@ -16,30 +16,31 @@ def resource_path(relative_path):
 class KyogaTVPlayer(QMainWindow):
     def __init__(self):
         super().__init__()
-        # Updated Brand Name
         self.setWindowTitle("Kyoga TV Live")
         self.resize(1280, 720)
 
-        # Apply logo.ico to the window
-        icon_path = resource_path("logo.ico")
-        if os.path.exists(icon_path):
-            self.setWindowIcon(QIcon(icon_path))
+        # Fail-safe icon loading
+        try:
+            icon_path = resource_path("logo.ico")
+            if os.path.exists(icon_path):
+                self.setWindowIcon(QIcon(icon_path))
+        except:
+            pass # Continue without icon if there's an error
 
         self.browser = QWebEngineView()
-        
-        # Kyoga TV Stream URL
         target_url = "https://live21.bozztv.com/akamaissh101/ssh101/livetv1995/playlist.m3u8"
         self.browser.setUrl(QUrl(target_url))
-        
         self.setCentralWidget(self.browser)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     
-    # Apply logo.ico to the Taskbar
-    icon_path = resource_path("logo.ico")
-    if os.path.exists(icon_path):
-        app.setWindowIcon(QIcon(icon_path))
+    try:
+        icon_path = resource_path("logo.ico")
+        if os.path.exists(icon_path):
+            app.setWindowIcon(QIcon(icon_path))
+    except:
+        pass
         
     window = KyogaTVPlayer()
     window.show()
